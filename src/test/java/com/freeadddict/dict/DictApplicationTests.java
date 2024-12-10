@@ -1,10 +1,10 @@
-package com.freeadddict.basic;
+package com.freeadddict.dict;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BasicApplicationTests {
+class DictApplicationTests {
 
 	@Test
 	void contextLoads() {

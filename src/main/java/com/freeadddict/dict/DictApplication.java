@@ -1,13 +1,13 @@
-package com.freeadddict.basic;
+package com.freeadddict.dict;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BasicApplication {
+public class DictApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BasicApplication.class, args);
+		SpringApplication.run(DictApplication.class, args);
 	}
 
 }
