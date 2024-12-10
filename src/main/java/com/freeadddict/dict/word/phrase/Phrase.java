@@ -8,11 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor
 public class Phrase {
 
   @Id

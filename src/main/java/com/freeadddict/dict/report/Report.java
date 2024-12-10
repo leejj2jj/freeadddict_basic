@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.freeadddict.dict.member.Member;
 import com.freeadddict.dict.report.reportReply.ReportReply;
 import com.freeadddict.dict.word.ReportedWord;
@@ -18,11 +21,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor
 public class Report {
 
   @Id
@@ -36,8 +37,10 @@ public class Report {
   private String content;
 
   @Column(nullable = false)
+  @CreationTimestamp
   private LocalDateTime writeDate;
 
+  @UpdateTimestamp
   private LocalDateTime modifyDate;
 
   @ManyToOne
@@ -49,4 +52,10 @@ public class Report {
 
   @OneToMany(mappedBy = "report")
   private List<ReportedWord> reportedWords = new ArrayList<>();
+
+  private Report(String title, String content, Member member) {
+    this.title = title;
+    this.content = content;
+    this.member = member;
+  }
 }

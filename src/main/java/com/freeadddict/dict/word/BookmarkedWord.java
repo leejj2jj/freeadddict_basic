@@ -25,4 +25,9 @@ public class BookmarkedWord {
   @ManyToOne
   @JoinColumn(name = "bookmark_id")
   private Bookmark bookmark;
+
+  public BookmarkedWord(Word word, Bookmark bookmark) {
+    this.word = word;
+    this.bookmark = bookmark;
+  }
 }

@@ -26,4 +26,9 @@ public class ReportedWord {
   @JoinColumn(name = "word_id")
   private Word word;
 
+  public ReportedWord(Report report, Word word) {
+    this.report = report;
+    this.word = word;
+  }
+
 }

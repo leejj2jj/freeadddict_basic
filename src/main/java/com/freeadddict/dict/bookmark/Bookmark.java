@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.freeadddict.dict.member.Member;
 import com.freeadddict.dict.word.BookmarkedWord;
 
@@ -15,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,11 +32,14 @@ public class Bookmark {
   private Long id;
 
   @Column(nullable = false, length = 50)
+  @Pattern(regexp = "^{1,50}$", message = "이름은 50자 이하여야 합니다.")
   private String name;
 
   @Column(nullable = false)
+  @CreationTimestamp
   private LocalDateTime makeDate;
 
+  @UpdateTimestamp
   private LocalDateTime modifyDate;
 
   @ManyToOne

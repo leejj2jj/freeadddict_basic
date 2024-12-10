@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.freeadddict.dict.admin.Admin;
 import com.freeadddict.dict.member.Member;
 import com.freeadddict.dict.word.phrase.WordPhrase;
@@ -17,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,20 +34,24 @@ public class Word {
   private Long id;
 
   @Column(nullable = false, length = 50)
+  @Pattern(regexp = "^.{1,50}$", message = "단어명은 50자 이내로 입력하세요.")
   private String name;
 
   @Column(nullable = false, length = 50)
+  @Pattern(regexp = "^.{1,50}$", message = "품사명은 50자 이내로 입력하세요.")
   private String partOfSpeech;
 
   @Column(nullable = false, length = 100)
+  @Pattern(regexp = "^.{1,100}$", message = "발음은 100자 이내로 입력하세요.")
   private String pronunciation;
 
   @Column(nullable = false, columnDefinition = "TEXT")
   private String meaning;
 
-  @Column(nullable = false)
+  @CreationTimestamp
   private LocalDateTime addDate;
 
+  @UpdateTimestamp
   private LocalDateTime modifyDate;
 
   @ManyToOne

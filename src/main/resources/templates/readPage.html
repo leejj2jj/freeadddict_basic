@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="script">
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script id="templateReply" type="text/x-handlebars-template">
+        <table class="table" id="replyTable">
+            <tbody>
+            {{#each .}}
+                <tr>
+                    <td>{{rno}}</td>
+                    <td>{{replier}}</td>
+                    <td>{{retext}}</td>
+                    <td>{{convertDate replydate}}</td>
+                    <td>
+                        <button type="button" name="delete" class="btn btn-outline-danger btn-sm" data-rno="{{rno}}">Delete</button>
+                        <button type="button" name="edit" class="btn btn-outline-info btn-sm" data-rno="{{rno}}">Edit</button>
+                        <button type="button" name="update" class="btn btn-outline-primary btn-sm" data-rno="{{rno}}">Update</button>
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </script>
+  <script>
+    Handlebars.registerHelper("convertDate", function (replydate) {
+      const date = new Date(replydate);
+
+      let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+      let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
+      let hour = date.getHours() < 10 ? "0" + (date.getHours()) : date.getHours();
+      let minute = date.getMinutes() < 10 ? "0" + (date.getMinutes()) : date.getMinutes();
+      let second = date.getSeconds() < 10 ? "0" + (date.getSeconds()) : date.getSeconds();
+      return `${date.getFullYear()}/${month}/${day} ${hour}:${minute}:${second}`;
+    });
+  </script>
+</th:block>
+<th:block layout:fragment="content">
+  <div class="row">
+    <div class="col">
+      <h1 class="mt-5">게시물 조회</h1>
+      <form id="form1" method="post" action="">
+        <input type="hidden" name="bno" th:value="${boardVO.bno}">
+        <input type="hidden" name="page" th:value="${cri.page}">
+        <input type="hidden" name="perPageNum" th:value="${cri.perPageNum}">
+        <input type="hidden" name="searchType" th:value="${cri.searchType}">
+        <input type="hidden" name="keyword" th:value="${cri.keyword}">
+      </form>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td scope="row" th:text="|게시물 번호: ${boardVO.bno}|"></td>
+            <td th:text="|제목: ${boardVO.title}|"></td>
+            <td th:text="|조회 수: ${boardVO.viewcount}|"></td>
+          </tr>
+          <tr>
+            <td scope="row">내용</td>
+            <td colspan="2" th:text="${ boardVO.content}"></td>
+          </tr>
+          <tr>
+            <td scope="row" colspan="3"
+              th:text="|등록일: ${#dates.format(boardVO.regdate, 'yyyy-MM-dd HH:mm:ss')} / 수정일: ${#dates.format(boardVO.updatedate, 'yyyy-MM-dd HH:mm:ss')}|">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <button type="button" class="btn btn-primary" onclick="fn_editForm()">Edit</button>
+        <button type="button" class="btn btn-danger" onclick="fn_delete_ok()">Delete</button>
+        <button type="button" class="btn btn-success" onclick="fn_go_list()">List</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="mb-3 mt-5">
+          <button type="button" class="btn btn-primary mb-2" id="btn_reply">댓글 작성하기</button>
+          작성자: <span id="writer" th:text="${boardVO.writer}"></span>
+          <textarea class="form-control" id="retext" rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" id="replyList"></div>
+    </div>
+    <div class="row">
+      <div class="col" id="replyPaging"></div>
+    </div>
+  </div>
+</th:block>
+<th:block layout:fragment="script2">
+  <script th:inline="javascript">
+
+    let frm = document.getElementById("form1");
+
+    function fn_editForm() {
+      frm.action = "/modifyPage";
+      frm.method = "get";
+      frm.submit();
+    }
+
+    function fn_delete_ok() {
+      let bno = [[${ boardVO.bno }]];
+      if (!confirm(bno + "번 게시물을 삭제하시겠습니까?")) return;
+      frm.action = "/delete";
+      frm.method = "get";
+      frm.submit();
+    }
+
+    function fn_go_list() {
+      frm.action = "/list";
+      frm.method = "get";
+      frm.submit();
+    }
+
+    // jQuery 문법
+    $(document).ready(function () {
+      // 댓글 작성하기 클릭 이벤트 설정
+      $("#btn_reply").on("click", function () {
+        let retext = $("#retext").val(); // <input>, <select>, <textarea>
+        let writer = $("#writer").text(); // 이외는 html(), text()
+        let bno = [[${ boardVO.bno }]];
+
+        // 자바스크립트 object 문법
+        // 스프링의 댓글 데이터를 받는 파라미터가 ReplyVO vo이므로
+        let replyData = { bno: bno, retext: retext, replier: writer };
+
+        $.ajax({
+          type: 'post',
+          url: '/replies/new',
+          headers: {
+            "Content-Type": "application/json", "X-HTTP-Method-Override": "POST"
+          },
+          // 서버로 보내는 JSON 포맷의 댓글 데이터
+          data: JSON.stringify(replyData),
+          // 서버에서 보내 오는 데이터의 타입
+          dataType: 'text',
+          success: function (data) {
+            if (data == "success") {
+              alert("댓글 등록됨.");
+              $("#retext").val(""); // 댓글 텍스트 지움
+
+              // 댓글 목록, 페이징
+              getPage(url);
+            }
+          }
+        });
+      });
+
+      // 댓글 삭제 버튼 클릭 이벤트 등록
+      // 동적 태그 선택자는 직접 이벤트 설정 불가
+      // ${"정적 태그 선택자"}.on("click", "동적 태그 선택자")
+      $("#replyList").on("click", "table#replyTable button[name=delete]", function () {
+        let rno = $(this).data("rno");
+        if (!confirm(`${rno}번 댓글을 삭제하시겠습니까?`)) return;
+        console.log("댓글 번호", rno);
+
+        $.ajax({
+          type: 'delete',
+          url: `replies/delete/${rno}`,
+          headers: {
+            "Content-Type": "application/json", "X-HTTP-Method-Override": "DELETE"
+          },
+          dataType: 'text',
+          success: function (data) {
+            if (data == "success") {
+              alert("댓글 삭제됨.");
+              getPage(url);
+            }
+          }
+        });
+      });
+
+      // 댓글 수정
+      $("#replyList").on("click", "table#replyTable button[name=edit]", function () {
+
+        let cur_tr = $(this).parent().parent(); // Edit 버튼을 감싼 <tr> 태그 참조
+
+        let rno = $(this).data("rno");
+        let url = `/replies/select/${rno}`;
+
+        $.getJSON(url, function (data) {
+          let rno = data.rno;
+          let bno = data.bno;
+          let retext = data.retext;
+          let replier = data.replier;
+          let replydate = data.replydate;
+          let updatedate = data.updatedate;
+
+          console.log(cur_tr.find("td")[2].innerHTML);
+
+          let td_retext = cur_tr.find("td")[2].innerHTML;
+          cur_tr.find("td")[2].innerHTML = `<input type='text' id='rno_${rno}' value='${td_retext}'>`;
+
+          $("table#replyTable button[name=delete]").hide();
+          $("table#replyTable button[name=edit]").hide();
+          $("table#replyTable button[name=update]").show();
+        });
+
+        // 수정 저장 버튼
+        $("#replyList").on("click", "table#replyTable button[name=update]", function () {
+          let cur_tr = $(this).parent().parent();
+          let rno = $(this).data("rno");
+          let retext = cur_tr.find(`#rno_${rno}`).val();
+          let replyData = { rno: rno, retext: retext };
+
+          $.ajax({
+            type: 'put',
+            url: 'replies/update',
+            headers: {
+              "Content-Type": "application/json", "X-HTTP-Method-Override": "PUT"
+            },
+            data: JSON.stringify(replyData), // 스프링으로 보낼 JSON 포맷 데이터
+            dataType: 'text', // 스프링에서 보내 온 데이터 타입
+            success: function (data) {
+              if (data == "success") {
+                alert("댓글 수정됨.");
+                getPage(url);
+              }
+            }
+          });
+        });
+      });
+
+      // 페이지 번호 클릭 설정
+      $("div#replyPaging").on("click", "li a", function (e) {
+        e.preventDefault(); // <a> 태그의 링크 기능 제거
+        replyPage = $(this).attr("href"); // 페이지 번호 읽기
+        url = `/replies/pages/${bno}/${replyPage}`;
+        getPage(url);
+      });
+    });
+
+    let bno = [[${ boardVO.bno }]];
+    let replyPage = 1; // 댓글 목록의 첫 번째 페이지
+
+    // 댓글 목록 데이터를 불러올 주소
+    let url = `/replies/pages/${bno}/${replyPage}`;
+
+    getPage(url);
+
+    function getPage(url) {
+      // data: 스프링에서 JSON 포맷으로 보낸 댓글 목록과 페이징 정보 데이터를 받는다.
+      $.getJSON(url, function (data) {
+        console.log(data.list); // 댓글 목록
+        console.log(data.pageMaker); // 댓글 페이징
+
+        /*
+        let strHtml = "";
+        for (let i in data.list) {
+          strHtml += data.list[i].retext + "/" + data.list[i].replier;
+        }
+
+        console.log(strHtml);
+        */
+
+        // 댓글 목록 출력 함수
+        // 댓글 데이터, 출력될 태그 위치, 핸들바 템플릿
+        fn_displayReplyData(data.list, $("#replyList"), $("#templateReply"));
+        // 페이징 출력 함수
+        fn_displayReplyPaging(data.pageMaker, $("#replyPaging"));
+      });
+    }
+
+    // 댓글 목록 출력 함수: 핸들바 템플릿 사용
+    function fn_displayReplyData(replyData, target, template) {
+      let templateObj = Handlebars.compile(template.html()); // 내용 문법 검사
+      let replyHtml = templateObj(replyData); // 데이터 + 핸들바 템플릿 = HTML 코드
+
+      target.empty();
+      target.append(replyHtml);
+
+      // Update 버튼 숨기기
+      $("table#replyTable button[name=update]").hide();
+    }
+
+    // 페이징 출력 함수, 핸들바 템플릿 사용 안 함
+    function fn_displayReplyPaging(pageData, target) {
+
+      let pageStr = '<nav aria-label="Page navigation example">';
+      pageStr += '<ul class="pagination">';
+
+      if (pageData.prev) {
+        pageStr += `<li class="page-item"><a class="page-link" href="${(pageData.startPage - 1)}">Previous</a></li>`;
+      }
+
+      for (let i = pageData.startPage; i <= pageData.endPage; i++) {
+        let curPageClass = (pageData.cri.page == i) ? 'active' : '';
+        pageStr += `<li class="page-item ${curPageClass}"><a class="page-link" href="${i}">${i}</a></li>`;
+      }
+
+      if (pageData.next) {
+        pageStr += `<li class="page-item"><a class="page-link" href="${(pageData.endPage + 1)}">Next</a></li>`;
+      }
+
+      pageStr += '</ul>';
+      pageStr += '</nav>';
+
+      console.log(pageStr);
+
+      target.empty();
+      target.append(pageStr);
+    }
+
+  </script>
+</th:block>
+
+</html>

@@ -26,4 +26,9 @@ public class WordPhrase {
   @JoinColumn(name = "phrase_id")
   private Phrase phrase;
 
+  public WordPhrase(Word word, Phrase phrase) {
+    this.word = word;
+    this.phrase = phrase;
+  }
+
 }
