@@ -20,10 +20,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Report {
 
   @Id
@@ -44,7 +48,7 @@ public class Report {
   private LocalDateTime modifyDate;
 
   @ManyToOne
-  @JoinColumn
+  @JoinColumn(name = "member_idx")
   private Member member;
 
   @OneToOne(mappedBy = "report")
@@ -53,6 +57,7 @@ public class Report {
   @OneToMany(mappedBy = "report")
   private List<ReportedWord> reportedWords = new ArrayList<>();
 
+  @Builder
   private Report(String title, String content, Member member) {
     this.title = title;
     this.content = content;

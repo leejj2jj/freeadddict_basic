@@ -18,18 +18,22 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Pattern;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReportReply {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Pattern(regexp = "^{1,100}$")
   @Column(length = 100)
-  @Pattern(regexp = "^{1,100}$", message = "제목은 100자 이하로 입력하세요.")
   private String title;
 
   @Column(columnDefinition = "TEXT")
@@ -42,13 +46,14 @@ public class ReportReply {
   private LocalDateTime modifyDate;
 
   @ManyToOne
-  @JoinColumn
+  @JoinColumn(name = "admin_idx")
   private Admin admin;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "report_id", referencedColumnName = "id")
+  @JoinColumn
   private Report report;
 
+  @Builder
   public ReportReply(String title, String content, Admin admin, Report report) {
     this.title = title;
     this.content = content;

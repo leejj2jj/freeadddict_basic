@@ -9,15 +9,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
 
   @Id
+  @Column(nullable = false)
   private String postcode;
 
   @Column(nullable = false, length = 100)
@@ -29,6 +32,7 @@ public class Address {
   @OneToMany(mappedBy = "address")
   private List<Member> members = new ArrayList<>();
 
+  @Builder
   public Address(String postcode, String address, String detailedAddress) {
     this.postcode = postcode;
     this.address = address;

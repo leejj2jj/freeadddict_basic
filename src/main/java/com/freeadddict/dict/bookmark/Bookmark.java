@@ -19,36 +19,40 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Pattern;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bookmark {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false, updatable = false)
   private Long id;
 
+  @Pattern(regexp = "^{1,50}$")
   @Column(nullable = false, length = 50)
-  @Pattern(regexp = "^{1,50}$", message = "이름은 50자 이하여야 합니다.")
   private String name;
 
-  @Column(nullable = false)
   @CreationTimestamp
+  @Column(nullable = false)
   private LocalDateTime makeDate;
 
   @UpdateTimestamp
   private LocalDateTime modifyDate;
 
   @ManyToOne
-  @JoinColumn
+  @JoinColumn(name = "member_idx", nullable = false)
   private Member member;
 
   @OneToMany(mappedBy = "bookmark")
   private List<BookmarkedWord> bookmarkedWords = new ArrayList<>();
 
+  @Builder
   public Bookmark(String name) {
     this.name = name;
   }

@@ -7,10 +7,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Phrase {
 
   @Id
@@ -23,6 +27,7 @@ public class Phrase {
   @OneToMany(mappedBy = "phrase")
   private List<WordPhrase> words = new ArrayList<>();
 
+  @Builder
   public Phrase(String phrase, String meaning) {
     this.phrase = phrase;
     this.meaning = meaning;

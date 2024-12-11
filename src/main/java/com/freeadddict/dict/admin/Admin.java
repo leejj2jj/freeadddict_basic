@@ -17,32 +17,35 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Pattern;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Admin {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false)
   private Long idx;
 
+  @Pattern(regexp = "^[a-zA-Z0-9가-힣\\s-]{1,15}$")
   @Column(nullable = false, length = 15)
-  @Pattern(regexp = "^[a-zA-Z0-9가-힣\\s-]{1,15}$", message = "ID는 15자 이하의 영문, 한글, 공백, 하이픈, 언더바만 가능합니다.")
   private String id;
 
+  @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,16}$")
   @Column(nullable = false, length = 60)
-  @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,16}$", message = "비밀번호는 8~16자의 영문, 한글, 특수 문자(!@#$%^&*)를 포함해야 합니다.")
   private String password;
 
+  @Pattern(regexp = "^[a-zA-Z0-9가-힣]{1,15}$")
   @Column(nullable = false, unique = true, length = 15)
-  @Pattern(regexp = "^[a-zA-Z0-9가-힣]{1,15}$", message = "닉네임은 15자 이하만 가능합니다.")
   private String nickname;
 
-  @Column(nullable = false)
   @CreationTimestamp
+  @Column(nullable = false)
   private LocalDateTime addDate;
 
   @UpdateTimestamp
@@ -56,6 +59,7 @@ public class Admin {
   @OneToMany(mappedBy = "admin")
   private List<TodaysWord> todaysWords = new ArrayList<>();
 
+  @Builder
   public Admin(String id, String password, String nickname) {
     this.id = id;
     this.password = password;

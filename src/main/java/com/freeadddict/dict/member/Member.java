@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -21,46 +22,50 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Pattern;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long idx;
 
+  @Pattern(regexp = "^.{1,15}$")
   @Column(nullable = false, length = 15)
-  @Pattern(regexp = "^.{1,15}$", message = "ID는 1~15자로 입력하세요.")
   private String id;
 
+  @Pattern(regexp = "^.{8,60}$")
   @Column(nullable = false, length = 60)
-  @Pattern(regexp = "^.{8,60}$", message = "비밀번호는 8~60자로 입력하세요.")
   private String password;
 
+  @Pattern(regexp = "^.{1,50}$")
   @Column(nullable = false, length = 50)
-  @Pattern(regexp = "^.{1,50}$", message = "이름은 1~50자로 입력하세요.")
   private String name;
 
+  @Pattern(regexp = "^.{1,15}$")
   @Column(nullable = false, unique = true, length = 15)
-  @Pattern(regexp = "^.{1,15}$", message = "별명은 1~15자로 입력하세요.")
   private String nickname;
 
+  @Pattern(regexp = "^.{1,15}$")
   @Column(length = 15)
-  @Pattern(regexp = "^.{1,15}$", message = "전화번호는 1~15자로 입력하세요.")
   private String phone;
 
+  @Pattern(regexp = "^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)+$")
   @Column(nullable = false, unique = true, length = 50)
-  @Pattern(regexp = "^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)+$", message = "이메일 형식을 지켜주세요.")
   private String email;
 
+  @ColumnDefault("1")
+  @Column(columnDefinition = "TINYINT(1)")
   private boolean isReceivingEmail;
 
-  @Column(nullable = false)
   @CreationTimestamp
+  @Column(nullable = false)
   private LocalDateTime registerDate;
 
   @UpdateTimestamp
@@ -82,6 +87,7 @@ public class Member {
   @OneToMany(mappedBy = "member")
   private List<Report> reports = new ArrayList<>();
 
+  @Builder
   public Member(String id, String password, String name, String nickname, String phone, String email,
       boolean isReceivingEmail) {
     this.id = id;
