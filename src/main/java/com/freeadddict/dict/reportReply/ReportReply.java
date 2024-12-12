@@ -1,4 +1,4 @@
-package com.freeadddict.dict.report.reportReply;
+package com.freeadddict.dict.reportReply;
 
 import java.time.LocalDateTime;
 
@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.freeadddict.dict.admin.Admin;
-import com.freeadddict.dict.report.Report;
+import com.freeadddict.dict.report.domain.Report;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

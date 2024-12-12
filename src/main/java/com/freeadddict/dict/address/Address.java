@@ -1,4 +1,4 @@
-package com.freeadddict.dict.member.address;
+package com.freeadddict.dict.address;
 
 import java.util.ArrayList;
 import java.util.List;

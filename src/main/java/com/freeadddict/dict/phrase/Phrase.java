@@ -1,4 +1,4 @@
-package com.freeadddict.dict.word.phrase;
+package com.freeadddict.dict.phrase;
 
 import java.util.ArrayList;
 import java.util.List;

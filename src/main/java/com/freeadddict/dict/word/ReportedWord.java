@@ -1,6 +1,6 @@
 package com.freeadddict.dict.word;
 
-import com.freeadddict.dict.report.Report;
+import com.freeadddict.dict.report.domain.Report;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

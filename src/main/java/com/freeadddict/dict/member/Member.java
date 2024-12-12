@@ -8,9 +8,9 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.freeadddict.dict.address.Address;
 import com.freeadddict.dict.bookmark.Bookmark;
-import com.freeadddict.dict.member.address.Address;
-import com.freeadddict.dict.report.Report;
+import com.freeadddict.dict.report.domain.Report;
 import com.freeadddict.dict.word.Word;
 
 import jakarta.persistence.Column;

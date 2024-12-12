@@ -1,9 +1,9 @@
-package com.freeadddict.dict.word.phrase;
+package com.freeadddict.dict.todaysWord;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PhraseRepository extends JpaRepository<Phrase, String> {
+public interface TodaysWordRepository extends JpaRepository<TodaysWord, Long> {
 
 }

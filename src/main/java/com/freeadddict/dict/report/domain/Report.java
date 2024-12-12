@@ -1,18 +1,20 @@
-package com.freeadddict.dict.report;
+package com.freeadddict.dict.report.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.freeadddict.dict.member.Member;
-import com.freeadddict.dict.report.reportReply.ReportReply;
+import com.freeadddict.dict.reportReply.ReportReply;
 import com.freeadddict.dict.word.ReportedWord;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,8 +27,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
+@Getter
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Report {
 
@@ -40,11 +43,11 @@ public class Report {
   @Column(nullable = false, columnDefinition = "TEXT")
   private String content;
 
+  @CreatedDate
   @Column(nullable = false)
-  @CreationTimestamp
   private LocalDateTime writeDate;
 
-  @UpdateTimestamp
+  @LastModifiedDate
   private LocalDateTime modifyDate;
 
   @ManyToOne
@@ -62,5 +65,11 @@ public class Report {
     this.title = title;
     this.content = content;
     this.member = member;
+  }
+
+  public void update(String title, String content) {
+    this.title = title;
+    this.content = content;
+    this.modifyDate = LocalDateTime.now();
   }
 }

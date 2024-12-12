@@ -7,8 +7,8 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.freeadddict.dict.report.reportReply.ReportReply;
-import com.freeadddict.dict.word.todaysWord.TodaysWord;
+import com.freeadddict.dict.reportReply.ReportReply;
+import com.freeadddict.dict.todaysWord.TodaysWord;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

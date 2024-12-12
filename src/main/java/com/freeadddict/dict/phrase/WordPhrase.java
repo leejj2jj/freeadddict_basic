@@ -1,4 +1,4 @@
-package com.freeadddict.dict.word.phrase;
+package com.freeadddict.dict.phrase;
 
 import com.freeadddict.dict.word.Word;
 

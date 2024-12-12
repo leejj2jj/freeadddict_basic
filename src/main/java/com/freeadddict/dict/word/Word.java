@@ -9,8 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.freeadddict.dict.admin.Admin;
 import com.freeadddict.dict.member.Member;
-import com.freeadddict.dict.word.phrase.WordPhrase;
-import com.freeadddict.dict.word.todaysWord.TodaysWord;
+import com.freeadddict.dict.phrase.WordPhrase;
+import com.freeadddict.dict.todaysWord.TodaysWord;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -81,5 +81,4 @@ public class Word {
     this.pronunciation = pronunciation;
     this.meaning = meaning;
   }
-
 }

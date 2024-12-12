@@ -1,4 +1,4 @@
-package com.freeadddict.dict.word.todaysWord;
+package com.freeadddict.dict.todaysWord;
 
 import java.time.LocalDateTime;
 
