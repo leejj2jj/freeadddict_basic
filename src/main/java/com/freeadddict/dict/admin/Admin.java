@@ -4,14 +4,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.freeadddict.dict.reportReply.ReportReply;
 import com.freeadddict.dict.todaysWord.TodaysWord;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,6 +26,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Admin {
 
@@ -44,11 +47,11 @@ public class Admin {
   @Column(nullable = false, unique = true, length = 15)
   private String nickname;
 
-  @CreationTimestamp
+  @CreatedDate
   @Column(nullable = false)
   private LocalDateTime addDate;
 
-  @UpdateTimestamp
+  @LastModifiedDate
   private LocalDateTime modifyDate;
 
   private LocalDateTime accessDate;

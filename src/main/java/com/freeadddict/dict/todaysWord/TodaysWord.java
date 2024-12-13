@@ -2,12 +2,14 @@ package com.freeadddict.dict.todaysWord;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.freeadddict.dict.admin.Admin;
 import com.freeadddict.dict.word.Word;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TodaysWord {
 
@@ -27,7 +30,7 @@ public class TodaysWord {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @CreationTimestamp
+  @CreatedDate
   private LocalDateTime todayDate;
 
   @ManyToOne

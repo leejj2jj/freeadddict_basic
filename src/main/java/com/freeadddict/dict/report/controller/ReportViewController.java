@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.freeadddict.dict.report.domain.Report;
 import com.freeadddict.dict.report.dto.ReportListViewResponse;
+import com.freeadddict.dict.report.dto.ReportViewResponse;
 import com.freeadddict.dict.report.service.ReportService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,9 @@ public class ReportViewController {
   }
 
   @GetMapping("/reports/{id}")
-  public String getReport(@PathVariable Long id, Model model) {
+  public String getReport(@PathVariable("id") Long id, Model model) {
     Report report = reportService.findById(id);
-    model.addAttribute("report", new ReportListViewResponse(report));
+    model.addAttribute("report", new ReportViewResponse(report));
 
     return "report";
   }

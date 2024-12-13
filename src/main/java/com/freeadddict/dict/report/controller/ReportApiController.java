@@ -45,7 +45,6 @@ public class ReportApiController {
   @GetMapping("/api/reports/{id}")
   public ResponseEntity<ReportResponse> findReport(@PathVariable long id) {
     Report report = reportService.findById(id);
-
     return ResponseEntity.ok().body(new ReportResponse(report));
   }
 
@@ -56,9 +55,9 @@ public class ReportApiController {
   }
 
   @PutMapping("/api/reports/{id}")
-  public ResponseEntity<Report> updateReport(@PathVariable long id,
+  public ResponseEntity<ReportResponse> updateReport(@PathVariable long id,
       @RequestBody UpdateReportRequest request) {
     Report updatedReport = reportService.update(id, request);
-    return ResponseEntity.ok().body(updatedReport);
+    return ResponseEntity.ok().body(new ReportResponse(updatedReport));
   }
 }

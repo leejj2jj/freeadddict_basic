@@ -2,57 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="header">
   <header>
-    <div class="px-3 py-2 text-bg-white border-bottom">
+    <div class="header">
       <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-dark text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-              <use xlink:href="#bootstrap" />
-            </svg>
+        <div class="header-element">
+          <a href="/" class="logo">
+            <i class="bi bi-book-half h1 me-3"></i>
+            FREE ADD DICT
           </a>
-          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-            <li>
-              <a href="/" class="nav-link text-dark">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                  <use xlink:href="#home" />
-                </svg> Home </a>
-            </li>
-            <li>
-              <a href="/list" class="nav-link text-dark">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                  <use xlink:href="#speedometer2" />
-                </svg> Dashboard </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link text-dark">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                  <use xlink:href="#table" />
-                </svg> Orders </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link text-dark">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                  <use xlink:href="#grid" />
-                </svg> Channels </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link text-dark">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                  <use xlink:href="#people-circle" />
-                </svg> Members </a>
-            </li>
-          </ul>
+          <nav>
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+              <li>
+                <a href="/" class="nav-link text-dark" style="text-align: center">
+                  <i class="bi bi-house-door h2"></i><br> 메인 </a>
+              </li>
+              <li>
+                <a href="/wordList" class="nav-link text-dark" style="text-align: center">
+                  <i class="bi bi-alphabet-uppercase h2"></i><br> 단어 목록 </a>
+              </li>
+              <li>
+                <a href="/login" class="nav-link text-dark" style="text-align: center">
+                  <i class="bi bi-door-open h2"></i><br> 로그인 </a>
+              </li>
+              <li>
+                <a href="/register" class="nav-link text-dark" style="text-align: center">
+                  <i class="bi bi-person-plus h2"></i><br> 회원 가입 </a>
+              </li>
+              <li>
+                <a href="/notices" class="nav-link text-dark" style="text-align: center">
+                  <i class="bi bi-megaphone h2"></i><br> 공지 </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
     <div class="px-3 py-2 border-bottom mb-3">
-      <div class="container d-flex flex-wrap justify-content-center">
-        <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search" />
-        </form>
-        <div class="text-end">
-          <button type="button" class="btn btn-info">로그인</button>
-          <button type="button" class="btn btn-primary">회원 가입</button>
+      <div class="container">
+        <div class="search-container">
+          <form class="search-box" role="search">
+            <input type="search" class="search-txt" placeholder="Search..." aria-label="Search" />
+            <button type="button" class="search-button">
+              <i class="bi bi-search"></i>
+            </button>
+          </form>
+          <button type="button" class="word-add-button">
+            <i class="bi bi-pen me-2"></i> 단어 등록
+          </button>
         </div>
       </div>
     </div>

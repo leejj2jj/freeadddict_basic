@@ -2,14 +2,16 @@ package com.freeadddict.dict.reportReply;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.freeadddict.dict.admin.Admin;
 import com.freeadddict.dict.report.domain.Report;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +27,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReportReply {
 
@@ -39,10 +42,10 @@ public class ReportReply {
   @Column(columnDefinition = "TEXT")
   private String content;
 
-  @CreationTimestamp
+  @CreatedDate
   private LocalDateTime writeDate;
 
-  @UpdateTimestamp
+  @LastModifiedDate
   private LocalDateTime modifyDate;
 
   @ManyToOne
